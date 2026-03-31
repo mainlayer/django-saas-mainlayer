@@ -1,6 +1,6 @@
 # Django SaaS Starter — Powered by Mainlayer
 
-A production-ready Django SaaS starter that uses [Mainlayer](https://mainlayer.xyz) for payment infrastructure. Clone it, add your API key, and have a billing-enabled SaaS running in minutes.
+A production-ready Django SaaS starter that uses [Mainlayer](https://mainlayer.fr) for payment infrastructure. Clone it, add your API key, and have a billing-enabled SaaS running in minutes.
 
 ## What's included
 
@@ -66,7 +66,7 @@ Edit `.env` and fill in:
 | `MAINLAYER_RESOURCE_ID_PRO` | Resource ID for the Pro plan |
 | `MAINLAYER_RESOURCE_ID_ENTERPRISE` | Resource ID for the Enterprise plan |
 
-Get your API key and create resource IDs at [mainlayer.xyz](https://mainlayer.xyz).
+Get your API key and create resource IDs at [mainlayer.fr](https://mainlayer.fr).
 
 ### 3. Run migrations and start
 

@@ -36,7 +36,7 @@ def make_client(status_code: int, json_body: dict) -> MainlayerClient:
     """Return a MainlayerClient wired to a mock transport."""
     client = MainlayerClient(api_key="test-key")
     client._http = httpx.Client(
-        base_url="https://api.mainlayer.xyz",
+        base_url="https://api.mainlayer.fr",
         transport=MockTransport(status_code, json_body),
     )
     return client
@@ -50,7 +50,7 @@ def make_client(status_code: int, json_body: dict) -> MainlayerClient:
 class TestCreatePayment:
     def test_successful_payment_returns_url(self):
         client = make_client(200, {
-            "payment_url": "https://pay.mainlayer.xyz/session/abc123",
+            "payment_url": "https://pay.mainlayer.fr/session/abc123",
             "payment_id": "pay_abc123",
             "status": "pending",
         })
@@ -60,13 +60,13 @@ class TestCreatePayment:
             user_email="user@example.com",
         )
         assert result.success is True
-        assert result.payment_url == "https://pay.mainlayer.xyz/session/abc123"
+        assert result.payment_url == "https://pay.mainlayer.fr/session/abc123"
         assert result.payment_id == "pay_abc123"
         assert result.status == "pending"
 
     def test_201_status_is_treated_as_success(self):
         client = make_client(201, {
-            "payment_url": "https://pay.mainlayer.xyz/session/xyz",
+            "payment_url": "https://pay.mainlayer.fr/session/xyz",
             "payment_id": "pay_xyz",
         })
         result = client.create_payment("res_pro", 29.0, "user@example.com")
@@ -90,7 +90,7 @@ class TestCreatePayment:
 
         client = MainlayerClient(api_key="test-key")
         client._http = httpx.Client(
-            base_url="https://api.mainlayer.xyz",
+            base_url="https://api.mainlayer.fr",
             transport=TimeoutTransport(),
         )
         result = client.create_payment("res_pro", 29.0, "user@example.com")
@@ -99,7 +99,7 @@ class TestCreatePayment:
 
     def test_metadata_is_forwarded(self):
         """Ensure extra metadata does not break the call."""
-        client = make_client(200, {"payment_url": "https://pay.mainlayer.xyz/x", "payment_id": "p1"})
+        client = make_client(200, {"payment_url": "https://pay.mainlayer.fr/x", "payment_id": "p1"})
         result = client.create_payment(
             "res_pro", 29.0, "user@example.com",
             metadata={"user_id": "42", "tier": "pro"},
@@ -143,7 +143,7 @@ class TestCheckEntitlement:
 
         client = MainlayerClient(api_key="test-key")
         client._http = httpx.Client(
-            base_url="https://api.mainlayer.xyz",
+            base_url="https://api.mainlayer.fr",
             transport=TimeoutTransport(),
         )
         result = client.check_entitlement("res_pro", "user@example.com")
@@ -157,14 +157,14 @@ class TestCheckEntitlement:
 
 class TestGetPortalUrl:
     def test_returns_url_on_success(self):
-        client = make_client(200, {"url": "https://portal.mainlayer.xyz/cust_abc"})
+        client = make_client(200, {"url": "https://portal.mainlayer.fr/cust_abc"})
         url = client.get_portal_url("user@example.com")
-        assert url == "https://portal.mainlayer.xyz/cust_abc"
+        assert url == "https://portal.mainlayer.fr/cust_abc"
 
     def test_portal_url_field_alias(self):
-        client = make_client(200, {"portal_url": "https://portal.mainlayer.xyz/cust_abc"})
+        client = make_client(200, {"portal_url": "https://portal.mainlayer.fr/cust_abc"})
         url = client.get_portal_url("user@example.com")
-        assert url == "https://portal.mainlayer.xyz/cust_abc"
+        assert url == "https://portal.mainlayer.fr/cust_abc"
 
     def test_returns_none_on_error(self):
         client = make_client(400, {"error": "bad request"})
@@ -178,7 +178,7 @@ class TestGetPortalUrl:
 
         client = MainlayerClient(api_key="test-key")
         client._http = httpx.Client(
-            base_url="https://api.mainlayer.xyz",
+            base_url="https://api.mainlayer.fr",
             transport=ErrorTransport(),
         )
         url = client.get_portal_url("user@example.com")

@@ -67,7 +67,7 @@ class TestSubscribeView(TestCase):
         mock_client = MagicMock()
         mock_client.create_payment.return_value = PaymentResult(
             success=True,
-            payment_url="https://pay.mainlayer.xyz/session/test",
+            payment_url="https://pay.mainlayer.fr/session/test",
             payment_id="pay_test",
             status="pending",
         )
@@ -86,7 +86,7 @@ class TestSubscribeView(TestCase):
             resp = self.client.get("/billing/subscribe/pro/")
 
         assert resp.status_code == 302
-        assert resp["Location"] == "https://pay.mainlayer.xyz/session/test"
+        assert resp["Location"] == "https://pay.mainlayer.fr/session/test"
 
     @patch("billing.views.get_client")
     def test_payment_failure_shows_error_and_redirects_to_plans(self, mock_get_client):
