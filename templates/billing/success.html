@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Subscription Confirmed{% endblock %}
+
+{% block content %}
+<div class="min-h-[60vh] flex items-center justify-center py-16 px-4">
+  <div class="max-w-md w-full text-center">
+
+    <div class="inline-flex items-center justify-center h-20 w-20 rounded-full bg-green-100 mb-6">
+      <svg class="h-10 w-10 text-green-600" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+      </svg>
+    </div>
+
+    <h1 class="text-3xl font-extrabold text-gray-900 mb-3">
+      {% if plan %}{{ plan.name }} plan activated!{% else %}Payment received!{% endif %}
+    </h1>
+
+    <p class="text-gray-500 mb-8">
+      {% if plan %}
+        You now have access to all {{ plan.name }} features. If your access isn't reflected yet, click the button below to refresh.
+      {% else %}
+        Thank you for your payment. Your subscription should be active shortly.
+      {% endif %}
+    </p>
+
+    <div class="flex flex-col sm:flex-row gap-3 justify-center">
+      <a href="/dashboard/" class="inline-flex items-center justify-center px-6 py-3 bg-indigo-600 text-white rounded-xl font-semibold text-sm hover:bg-indigo-700 transition-colors">
+        Go to Dashboard
+      </a>
+      <a href="/billing/refresh/" class="inline-flex items-center justify-center px-6 py-3 bg-white text-gray-700 rounded-xl font-semibold text-sm border border-gray-300 hover:bg-gray-50 transition-colors">
+        Refresh Subscription
+      </a>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

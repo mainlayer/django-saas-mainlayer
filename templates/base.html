@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-gray-50">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Django SaaS{% endblock %} — Mainlayer</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/static/css/main.css">
+</head>
+<body class="h-full flex flex-col font-sans antialiased text-gray-900">
+
+  <!-- Navigation -->
+  <nav class="bg-white border-b border-gray-200 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between h-16 items-center">
+
+        <!-- Logo -->
+        <a href="/dashboard/" class="flex items-center gap-2">
+          <span class="text-indigo-600 font-black text-xl tracking-tight">SaaS</span>
+          <span class="text-gray-400 text-xs font-medium uppercase tracking-widest">by Mainlayer</span>
+        </a>
+
+        <!-- Nav links -->
+        <div class="flex items-center gap-6">
+          {% if user.is_authenticated %}
+            <a href="/dashboard/" class="text-sm font-medium text-gray-600 hover:text-indigo-600 transition-colors">Dashboard</a>
+            <a href="/billing/plans/" class="text-sm font-medium text-gray-600 hover:text-indigo-600 transition-colors">Plans</a>
+            <a href="/billing/portal/" class="text-sm font-medium text-gray-600 hover:text-indigo-600 transition-colors">Billing</a>
+            <a href="/accounts/settings/" class="text-sm font-medium text-gray-600 hover:text-indigo-600 transition-colors">Settings</a>
+            <form method="post" action="/accounts/logout/" class="inline">
+              {% csrf_token %}
+              <button type="submit" class="text-sm font-medium text-gray-500 hover:text-red-600 transition-colors">Sign out</button>
+            </form>
+            <span class="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold
+              {% if user.subscription_tier == 'enterprise' %}bg-purple-100 text-purple-700
+              {% elif user.subscription_tier == 'pro' %}bg-indigo-100 text-indigo-700
+              {% else %}bg-gray-100 text-gray-600{% endif %}">
+              {{ user.display_tier }}
+            </span>
+          {% else %}
+            <a href="/billing/plans/" class="text-sm font-medium text-gray-600 hover:text-indigo-600 transition-colors">Pricing</a>
+            <a href="/accounts/login/" class="text-sm font-medium text-gray-600 hover:text-indigo-600 transition-colors">Sign in</a>
+            <a href="/accounts/register/" class="inline-flex items-center px-4 py-2 rounded-lg bg-indigo-600 text-white text-sm font-semibold hover:bg-indigo-700 transition-colors">Get started</a>
+          {% endif %}
+        </div>
+
+      </div>
+    </div>
+  </nav>
+
+  <!-- Flash messages -->
+  {% if messages %}
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4 space-y-2">
+      {% for message in messages %}
+        <div class="flex items-start gap-3 p-4 rounded-lg border
+          {% if message.tags == 'error' %}bg-red-50 border-red-200 text-red-700
+          {% elif message.tags == 'success' %}bg-green-50 border-green-200 text-green-700
+          {% elif message.tags == 'warning' %}bg-yellow-50 border-yellow-200 text-yellow-800
+          {% else %}bg-blue-50 border-blue-200 text-blue-700{% endif %}">
+          <p class="text-sm font-medium">{{ message }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <!-- Main content -->
+  <main class="flex-1">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t border-gray-200 mt-auto">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+      <p class="text-sm text-gray-400">Powered by <a href="https://mainlayer.xyz" target="_blank" rel="noopener noreferrer" class="text-indigo-500 hover:underline">Mainlayer</a> — payment infrastructure for the modern web.</p>
+      <div class="flex gap-6">
+        <a href="/billing/plans/" class="text-sm text-gray-400 hover:text-gray-600">Pricing</a>
+        <a href="/accounts/register/" class="text-sm text-gray-400 hover:text-gray-600">Sign up</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
